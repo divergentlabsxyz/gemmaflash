@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemmaflash"
+version = "0.1.0"
+description = "Fast, low-memory Gemma 4 26B-A4B decoding on Apple Silicon: MTP speculative decoding and SSD-streamed experts behind a native GPU spin gate."
+readme = "README.md"
+requires-python = ">=3.10"
+# The runtime patches mlx-vlm internals and builds against MLX's headers: keep these pinned.
+dependencies = [
+    "mlx==0.32.4",
+    "mlx-vlm==0.7.9",
+    "nanobind==3.1.0",
+    "numpy",
+    "huggingface-hub",
+]
+
+[project.scripts]
+gemmaflash = "gemmaflash.__main__:main"
+
+[tool.setuptools]
+packages = ["gemmaflash", "gemmaflash.native"]
+
+[tool.setuptools.package-data]
+gemmaflash = ["data/*.json", "data/*.npy"]
+"gemmaflash.native" = ["xgate.cpp", "CMakeLists.txt"]
